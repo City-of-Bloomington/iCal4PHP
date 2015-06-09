@@ -11,7 +11,7 @@ class WeekDay
 	private $day;
 	private $offset = 0;
 
-	private $names = [
+	public static $names = [
         'SU'=>'Sunday',
         'MO'=>'Monday',
         'TU'=>'Tuesday',
@@ -51,7 +51,7 @@ class WeekDay
 
 	public function getDayName()
 	{
-		return $this->names[$this->day];
+		return self::$names[$this->day];
 	}
 
 	public function getDay()
