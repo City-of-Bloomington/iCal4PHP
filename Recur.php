@@ -23,24 +23,24 @@ class Recur
 	/**
 	 * These should be arrays of Integers
 	 */
-	private $secondList = array();
-    private $minuteList = array();
-    private $hourList = array();
-    private $monthDayList = array();
-    private $yearDayList = array();
-    private $weekNoList = array();
-    private $monthList = array();
-    private $setPosList = array();
+	private $secondList   = [];
+    private $minuteList   = [];
+    private $hourList     = [];
+    private $monthDayList = [];
+    private $yearDayList  = [];
+    private $weekNoList   = [];
+    private $monthList    = [];
+    private $setPosList   = [];
 
 	/**
 	 * This should be an array of WeekDay objects
 	 * WeekDays represent SU,MO,TU,WE,TH,FR,SA
 	 * Plus they have an offset
 	 */
-	private $dayList = array();
+	private $dayList = [];
 
 	private $weekStartDay = 'Sunday';
-	private $experimentalValues = array();
+	private $experimentalValues = [];
 	private $calIncField;
 
 
@@ -54,20 +54,20 @@ class Recur
 			foreach ($rules as $rule) {
 				list($field,$value) = explode('=',$rule);
 				switch ($field) {
-					case 'FREQ': $this->setFrequency($value); break;
-					case 'UNTIL': $this->setUntil($value); break;
-					case 'COUNT': $this->setCount($value); break;
-					case 'INTERVAL': $this->setInterval($value); break;
-					case 'BYSECOND': $this->setBySecond($value); break;
-					case 'BYMINUTE': $this->setByMinute($value); break;
-					case 'BYHOUR': $this->setByHour($value); break;
-					case 'BYDAY': $this->setByDay($value); break;
-					case 'BYMONTHDAY': $this->setByMonthDay($value); break;
-					case 'BYYEARDAY': $this->setByYearDay($value); break;
-					case 'BYWEEKNO': $this->setByWeekNo($value); break;
-					case 'BYMONTH': $this->setByMonth($value); break;
-					case 'BYSETPOS': $this->setBySetPos($value); break;
-					case 'WKST': $this->setWeekStartDay($value); break;
+					case 'FREQ':       $this->setFrequency   ($value); break;
+					case 'UNTIL':      $this->setUntil       ($value); break;
+					case 'COUNT':      $this->setCount       ($value); break;
+					case 'INTERVAL':   $this->setInterval    ($value); break;
+					case 'BYSECOND':   $this->setBySecond    ($value); break;
+					case 'BYMINUTE':   $this->setByMinute    ($value); break;
+					case 'BYHOUR':     $this->setByHour      ($value); break;
+					case 'BYDAY':      $this->setByDay       ($value); break;
+					case 'BYMONTHDAY': $this->setByMonthDay  ($value); break;
+					case 'BYYEARDAY':  $this->setByYearDay   ($value); break;
+					case 'BYWEEKNO':   $this->setByWeekNo    ($value); break;
+					case 'BYMONTH':    $this->setByMonth     ($value); break;
+					case 'BYSETPOS':   $this->setBySetPos    ($value); break;
+					case 'WKST':       $this->setWeekStartDay($value); break;
 
 					// assume experimental value..
 					default : $this->experimentalValues[$field] = $value;
@@ -92,7 +92,7 @@ class Recur
      * @param timestamp $periodEnd the ending timestamp of the period
      * @param timestamp $seed the timestamp of this Recurrence's first instance
      */
-	public function getDates($periodStart,$periodEnd=null,$seed=null)
+	public function getDates($periodStart, $periodEnd=null, $seed=null)
 	{
 		if (!$periodEnd) {
 			$periodEnd = strtotime('+1 year',$periodStart);
@@ -104,7 +104,7 @@ class Recur
 			$periodEnd = $this->until;
 		}
 
-		$dates = array();
+		$dates = [];
 		$cal = $seed;
 
 		$invalidCandidateCount = 0;
@@ -116,12 +116,12 @@ class Recur
 				break;
 			}
 			if ($this->count
-					&& (count($dates) + $invalidCandidateCount) >= $this->count) {
+                && (count($dates) + $invalidCandidateCount) >= $this->count) {
 				break;
 			}
 
 			$candidates = $this->getCandidates($cal);
-			foreach($candidates as $candidate) {
+			foreach ($candidates as $candidate) {
                 // don't count candidates that occur before the seed date..
                 if ($candidate >= $seed) {
                 	if ($candidate < $periodStart || $candidate > $periodEnd) {
@@ -160,16 +160,16 @@ class Recur
      */
 	public function getCandidates($date)
 	{
-		$dates = array($date);
-		$dates = $this->getMonthVariants($dates);
-		$dates = $this->getWeekNoVariants($dates);
-		$dates = $this->getYearDayVariants($dates);
+		$dates = [$date];
+		$dates = $this->getMonthVariants   ($dates);
+		$dates = $this->getWeekNoVariants  ($dates);
+		$dates = $this->getYearDayVariants ($dates);
 		$dates = $this->getMonthDayVariants($dates);
-		$dates = $this->getDayVariants($dates);
-		$dates = $this->getHourVariants($dates);
-		$dates = $this->getMinuteVariants($dates);
-		$dates = $this->getSecondVariants($dates);
-		$dates = $this->applySetPosRules($dates);
+		$dates = $this->getDayVariants     ($dates);
+		$dates = $this->getHourVariants    ($dates);
+		$dates = $this->getMinuteVariants  ($dates);
+		$dates = $this->getSecondVariants  ($dates);
+		$dates = $this->applySetPosRules   ($dates);
 
 		return $dates;
 	}
@@ -191,7 +191,7 @@ class Recur
 		}
 		// sort the array before processing
 		sort($dates);
-		$setPosDates = array();
+		$setPosDates = [];
 		$size = count($dates);
 		foreach ($this->getSetPosList() as $pos) {
 			if ($pos > 0 && $pos <= $size) {
@@ -218,7 +218,7 @@ class Recur
 			return $dates;
 		}
 
-    	$monthlyDates = array();
+    	$monthlyDates = [];
     	foreach ($dates as $date) {
     		$currentMonth = date('n',$date);
 			foreach ($this->monthList as $targetMonth) {
@@ -246,7 +246,7 @@ class Recur
 			return $dates;
 		}
 
-    	$secondlyDates = array();
+    	$secondlyDates = [];
     	foreach ($dates as $date) {
 			$cal = getdate($date);
 			foreach ($this->secondList as $second) {
@@ -271,7 +271,7 @@ class Recur
 			return $dates;
 		}
 
-    	$weekNoDates = array();
+    	$weekNoDates = [];
     	foreach ($dates as $date) {
     		$cal = getdate($date);
     		$year = $cal['year'];
@@ -329,7 +329,7 @@ class Recur
 			return $dates;
 		}
 
-        $yearDayDates = array();
+        $yearDayDates = [];
         foreach ($dates as $date) {
 			// PHP's year days start counting at 0
 			// iCalendar starts counding at 1
@@ -361,7 +361,7 @@ class Recur
 			return $dates;
 		}
 
-    	$monthDayDates = array();
+    	$monthDayDates = [];
     	foreach ($dates as $date) {
     		$cal = getdate($date);
     		foreach($this->monthDayList as $monthDay) {
@@ -386,7 +386,7 @@ class Recur
 			return $dates;
 		}
 
-    	$weekDayDates = array();
+    	$weekDayDates = [];
     	foreach ($dates as $date) {
 			foreach ($this->dayList as $weekDay) {
                 // if BYYEARDAY or BYMONTHDAY is specified filter existing list
@@ -398,7 +398,7 @@ class Recur
                 }
                 else {
                 	$absDays = $this->getAbsWeekDays($date,$weekDay);
-					$weekDayDates = array_merge($weekDayDates,$absDays);
+					$weekDayDates = array_merge($weekDayDates, $absDays);
                 }
 			}
     	}
@@ -417,7 +417,7 @@ class Recur
     private function getAbsWeekDays($date,WeekDay $weekDay)
     {
     	$cal = $date;
-    	$days = array();
+    	$days = [];
     	$calDay = $weekDay->getDayName();
 
     	if ($this->frequency == 'DAILY') {
@@ -501,7 +501,7 @@ class Recur
 			return $dates;
 		}
 
-    	$offsetDates = array();
+    	$offsetDates = [];
     	$size = count($dates);
 
     	if ($offset < 0 && $offset >= -$size) {
@@ -527,7 +527,7 @@ class Recur
 			return $dates;
 		}
 
-    	$hourlyDates = array();
+    	$hourlyDates = [];
     	foreach ($dates as $date) {
     		$cal = getdate($date);
     		foreach ($this->hourList as $hour) {
@@ -551,7 +551,7 @@ class Recur
 			return $dates;
 		}
 
-    	$minutelyDates = array();
+    	$minutelyDates = [];
     	foreach ($dates as $date) {
 			$cal = getdate($date);
 			foreach ($this->minuteList as $minute) {
@@ -585,42 +585,18 @@ class Recur
 	public function __toString()
 	{
 		$b = "FREQ={$this->frequency}";
-		if ($this->interval >= 1) {
-			$b.=";INTERVAL={$this->interval}";
-		}
-		if ($this->until != null) {
-			$b.=";UNTIL={$this->until}";
-		}
-		if ($this->count >= 1) {
-			$b.=";COUNT={$this->count}";
-		}
-		if (count($this->getMonthList())) {
-			$b.=";BYMONTH=".implode(',',$this->monthList);
-		}
-		if (count($this->getWeekNoList())) {
-			$b.=";BYWEEKNO=".implode(',',$this->weekNoList);
-		}
-		if (count($this->getYearDayList())) {
-			$b.=";BYYEARDAY=".implode(',',$this->yearDayList);
-		}
-		if (count($this->getMonthDayList())) {
-			$b.=";BYMONTHDAY=".implode(',',$this->monthDayList);
-		}
-		if (count($this->getDayList())) {
-			$b.=";BYDAY=".implode(',',$this->dayList);
-		}
-		if (count($this->getHourList())) {
-			$b.=";BYHOUR=".implode(',',$this->hourList);
-		}
-		if (count($this->getMinuteList())) {
-			$b.=";BYMINUTE=".implode(',',$this->minuteList);
-		}
-		if (count($this->getSecondList())) {
-			$b.=";BYSECOND=".implode(',',$this->secondList);
-		}
-		if (count($this->getSetPosList())) {
-			$b.=";BYSETPOS=".implode(',',$this->setPosList);
-		}
+		if ($this->interval >= 1   ) { $b.=";INTERVAL={$this->interval}"; }
+		if ($this->until    != null) { $b.=";UNTIL={$this->until}"; }
+		if ($this->count    >= 1   ) { $b.=";COUNT={$this->count}"; }
+		if (count($this->getMonthList   ())) { $b.=";BYMONTH="   .implode(',',$this->monthList); }
+		if (count($this->getWeekNoList  ())) { $b.=";BYWEEKNO="  .implode(',',$this->weekNoList); }
+		if (count($this->getYearDayList ())) { $b.=";BYYEARDAY=" .implode(',',$this->yearDayList); }
+		if (count($this->getMonthDayList())) { $b.=";BYMONTHDAY=".implode(',',$this->monthDayList); }
+		if (count($this->getDayList     ())) { $b.=";BYDAY="     .implode(',',$this->dayList); }
+		if (count($this->getHourList    ())) { $b.=";BYHOUR="    .implode(',',$this->hourList); }
+		if (count($this->getMinuteList  ())) { $b.=";BYMINUTE="  .implode(',',$this->minuteList); }
+		if (count($this->getSecondList  ())) { $b.=";BYSECOND="  .implode(',',$this->secondList); }
+		if (count($this->getSetPosList  ())) { $b.=";BYSETPOS="  .implode(',',$this->setPosList); }
 		return $b;
 	}
 

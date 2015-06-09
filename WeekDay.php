@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2007-2010 City of Bloomington, Indiana
+ * @copyright 2007-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -11,10 +11,17 @@ class WeekDay
 	private $day;
 	private $offset = 0;
 
-	private $names = array('SU'=>'Sunday','MO'=>'Monday','TU'=>'Tuesday','WE'=>'Wednesday',
-							'TH'=>'Thursday','FR'=>'Friday','SA'=>'Saturday');
+	private $names = [
+        'SU'=>'Sunday',
+        'MO'=>'Monday',
+        'TU'=>'Tuesday',
+        'WE'=>'Wednesday',
+        'TH'=>'Thursday',
+        'FR'=>'Friday',
+        'SA'=>'Saturday'
+    ];
 
-	public function __construct($string,$offset=null)
+	public function __construct($string, $offset=null)
 	{
 		if ($offset) {
 			$this->day = $string;
