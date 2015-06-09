@@ -1,4 +1,6 @@
 <?php
+use iCal4PHP\Recur;
+
 require_once dirname(__FILE__).'../../../Recur.php';
 
 class RecurTest extends \PHPUnit_Framework_TestCase

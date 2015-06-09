@@ -1,7 +1,7 @@
 <?php
 /**
  * This code is a port of the Recur class from iCal4J
- * available from http://sourceforge.net/projects/ical4j/
+ * available from https://github.com/ical4j/ical4j
  * iCal4J is written by Ben Fortuna and is available
  * under his hown licencse
  *
@@ -9,6 +9,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+namespace iCal4PHP;
+
 require_once dirname(__FILE__).'/WeekDay.php';
 
 class Recur
@@ -564,7 +566,7 @@ class Recur
     private function validateFrequency()
     {
         if ($this->frequency == null) {
-			throw new Exception('A recurrence rule MUST contain a FREQ rule part.');
+			throw new \Exception('A recurrence rule MUST contain a FREQ rule part.');
 		}
         switch ($this->getFrequency()) {
 			case 'SECONDLY':	$this->calIncField = 'seconds';	break;
@@ -575,7 +577,7 @@ class Recur
 			case 'MONTHLY':		$this->calIncField = 'months';	break;
 			case 'YEARLY':		$this->calIncField = 'years';	break;
 			default:
-				throw new Exception("Invalid FREQ rule part '{$this->frequency}' in recurrence rule");
+				throw new \Exception("Invalid FREQ rule part '{$this->frequency}' in recurrence rule");
         }
     }
 

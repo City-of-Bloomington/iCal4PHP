@@ -1,4 +1,6 @@
 <?php
+use iCal4PHP\WeekDay;
+
 require_once dirname(__FILE__).'../../../WeekDay.php';
 
 class WeekDayTest extends \PHPUnit_Framework_TestCase
