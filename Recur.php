@@ -5,11 +5,11 @@
  * iCal4J is written by Ben Fortuna and is available
  * under his hown licencse
  *
- * @copyright 2007-2010 City of Bloomington, Indiana
+ * @copyright 2007-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-require_once dirname(__FILE__).'/WeekDay.inc';
+require_once dirname(__FILE__).'/WeekDay.php';
 
 class Recur
 {

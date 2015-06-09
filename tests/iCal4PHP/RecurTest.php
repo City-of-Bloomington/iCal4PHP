@@ -1,8 +1,7 @@
 <?php
-require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'../../../Recur.inc';
+require_once dirname(__FILE__).'../../../Recur.php';
 
-class RecurTest extends PHPUnit_Framework_TestCase
+class RecurTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {

@@ -1,9 +1,7 @@
 <?php
-require_once 'PHPUnit/Framework.php';
+require_once dirname(__FILE__).'../../../WeekDay.php';
 
-require_once dirname(__FILE__).'../../../WeekDay.inc';
-
-class WeekDayTest extends PHPUnit_Framework_TestCase
+class WeekDayTest extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
