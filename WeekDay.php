@@ -21,6 +21,15 @@ class WeekDay
         'SA'=>'Saturday'
     ];
 
+    public static $offsets = [
+        1  => 'First',
+        2  => 'Second',
+        3  => 'Third',
+        4  => 'Fourth',
+        -2 => 'Second To Last',
+        -1 => 'Last'
+    ];
+
 	public function __construct($string, $offset=null)
 	{
 		if ($offset) {
